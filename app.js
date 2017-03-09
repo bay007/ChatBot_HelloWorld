@@ -7,8 +7,8 @@ const PAGE_ACCESS_TOKEN = 'EAAUMTIdYPQgBAIp5keHC0wwUDaEX5EpI4IyMmEeFsHk3H8ZCTRh5
 var app=express()
 app.use(bodyParser.json())
 
-app.listen(3000,null,()=>{
-    console.log("Escuchando en el perto 3000")
+app.listen(process.env.PORT || 3000,null,()=>{
+    console.log("Escuchando en el puerto 80")
 })
 
 app.get('/',(req,res)=>{
@@ -110,3 +110,6 @@ function callSendAPI(messageData) {
     }
   });  
 }
+
+// Put a friendly message on the terminal
+console.log('Server running at http://127.0.0.1:' + port + '/');
