@@ -3,12 +3,12 @@ const bodyParser = require('body-parser')
 const request = require('request')
 
 const PAGE_ACCESS_TOKEN = 'EAAUMTIdYPQgBAIp5keHC0wwUDaEX5EpI4IyMmEeFsHk3H8ZCTRh5C8SvHBvozrAREfH1ZAZANdm0LISZC467R7XBCYc9uAFPtwbnAugnfKnYwr7G0hAuSMMBKOGv3QFPRtvwO2q2vgOL14a4WLBx5S75iLPFZBBRSez1iCSXRlgZDZD'
-
+var port = process.env.PORT || 3000
 var app=express()
 app.use(bodyParser.json())
 
-app.listen(process.env.PORT || 3000,null,()=>{
-    console.log("Escuchando en el puerto 80")
+app.listen( port ,null,()=>{
+    console.log("Escuchando en el puerto %d",port)
 })
 
 app.get('/',(req,res)=>{
