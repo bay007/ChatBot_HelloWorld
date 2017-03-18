@@ -1,0 +1,77 @@
+<html>
+<head>
+	<title>Integracion API.AI</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://unpkg.com/bootstrap@3.3.7/dist/css/bootstrap.min.css">
+	<script type="text/javascript">
+
+		var accessToken = "27606e11210c4f538d8a8d67c32897d0";
+		var baseUrl = "https://api.api.ai/v1/";
+
+		$(document).ready(function() {
+			$( "button" ).click(function(e){
+				($( "#mensajeParaBot" ).val().trim()=="")?e.preventDefault():send();
+			});
+		
+			$( "#mensajeParaBot" ).keypress(function(event) {
+				if ((event.which == 13)&&($(this).val().trim()!="")) {
+					console.log();
+					event.preventDefault();
+					send();
+				}
+			});
+		});
+		
+		function send() {
+			var text = $( "#mensajeParaBot" ).val().trim();
+			$.ajax({
+				type: "POST",
+				url: baseUrl + "query?v=20150910",
+				contentType: "application/json; charset=utf-8",
+				dataType: "json",
+				headers: {
+					"Authorization": "Bearer " + accessToken
+				},
+				data: JSON.stringify({ 
+					query: text,
+					lang: "en",
+					sessionId: new Date().getTime(),
+					timezone: "America/Mexico_City"
+					}),
+
+				success: function(data) {
+					setResponse(data.result.fulfillment.messages[0].speech);
+				},
+				error: function() {
+					setResponse("Internal Server Error");
+				}
+			});
+			setResponse("Loading...");
+		}
+
+		function setResponse(val) {
+			$( "#mensajeParaBot" ).val("");
+			$( "#respuesta" ).text(val);
+		}
+
+	</script>
+</head>
+<body class="container-fluid" >
+	<div class="row">
+		<div class="col-md-9 col-md-push-1">
+			<form class="form-horizontal">
+				<div class="form-group">
+					<label for="mensajeParaBot" class="control-label">Mensaje</label>
+					<input id="mensajeParaBot"  class="form-control" type="text" placeholder="Escriba aquí lo que quiere preguntar."/> 
+					<button type="submit" class="btn btn-primary"> &#9166 </button>
+				</div>
+				<div class="form-group">
+					<label for="respuesta" class="control-label">Respuesta</label>
+					 <textarea id="respuesta" class="form-control" rows="3"></textarea>
+				</div>
+			</form>
+		</div>
+	</div>
+</body>
+</html>
